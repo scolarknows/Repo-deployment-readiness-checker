@@ -1,26 +1,92 @@
-@import "tailwindcss";
+--primary: #1B365D;        /* navy */
+--secondary: #005A9C;      /* blue */
+--accent: #60C1E5;         /* sky */
+--accent-light: #A0E0EF;   /* ice */
 
+--severity-critical: #A0171D;     /* desaturated red */
+--severity-high: #D47A1C;         /* desaturated amber */
+
+--near-white: #F5F5F5;
+
+/* Surface and borders */
+--surface: #1B365D;
+--border: #4A4A4A;
+
+/* Green is reserved for cursor trail only -- never use on UI elements */
+
+/* ========================================
+   Base & Background
+   ======================================== */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Set CSS variables on the root for the design system */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #08111F;
+  --fg: #F5F5F5;
+  --muted: #6B7A8C;
+  --primary: #1B365D;
+  --primary-dark: #08111F;
+  --secondary: #005A9C;
+  --accent: #60C1E5;
+  --accent-light: #A0E0EF;
+  --severity-critical: #A0171D;
+  --severity-high: #D47A1C;
+  --near-white: #F5F5F5;
+  --surface: #1B365D;
+  --border: #4A4A4A;
+  --radius: 0.5rem;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Background can be darker than --bg for the page */
+body {
+  font-family: "DM Sans", system-ui, -apple-system, sans-serif;
+  background-color: var(--bg);
+  color: var(--fg);
+  line-height: 1.6;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ========================================
+   Tailwind layer — weight rules
+   ======================================== */
+@layer base {
+  /* weight 200 only for body text at 18px or larger, in near-white with 4.5:1+ contrast */
+  p,
+  li {
+    font-weight: 200;
+    font-size: 1rem;
+    color: var(--near-white);
+  }
+
+  /* headings, buttons, labels, navigation, table text, badges use weight 500 */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  button,
+  label,
+  .nav-link,
+  .table-text,
+  .badge,
+  .small-text {
+    font-weight: 500;
+  }
+
+  /* H1 overrides to weight 900 */
+  h1 {
+    font-weight: 900;
+    line-height: 1.1;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ========================================
+   Responsive: min 360px
+   ======================================== */
+@media (min-width: 360px) {
+  body {
+    font-size: 14px; /* base for 360px viewport */
+  }
 }
