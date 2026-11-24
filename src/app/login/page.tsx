@@ -3,22 +3,35 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
+import { NextRequest } from "next/server";
 
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
+    setError(null);
 
-    // Single-step login redirect
-    setTimeout(() => {
-      setLoading(false);
+    try {
+      const supabase = createClient(request as unknown as NextRequest);
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) throw error;
+
       router.push("/dashboard");
-    }, 600);
+    } catch (err: any) {
+      setError(err.message);
+      setLoading(false);
+    }
   }
 
   return (
@@ -73,6 +86,12 @@ export default function LoginPage() {
             {loading ? "Signing in..." : "Sign In"}
           </button>
         </form>
+
+        {error && (
+          <div className="mt-3 p-3 bg-[var(--severity-critical)]/20 border border-[var(--severity-critical)] rounded text-red-200 text-sm">
+            {error}
+          </div>
+        )}
 
         <div className="mt-6 pt-4 border-t border-[var(--border)] text-xs text-[var(--muted)] flex justify-between">
           <span>Don&apos;t have an account?</span>

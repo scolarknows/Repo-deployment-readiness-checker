@@ -3,6 +3,8 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
+import { NextRequest } from "next/server";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -11,15 +13,16 @@ export default function SignupPage() {
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  function handleEmailSubmit(e: React.FormEvent) {
+  async function handleEmailSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (email.includes("@")) {
       setStep(2);
     }
   }
 
-  function handlePasswordSubmit(e: React.FormEvent) {
+  async function handlePasswordSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (password.length >= 6) {
       setStep(3);
@@ -31,11 +34,25 @@ export default function SignupPage() {
     if (!username) return;
     setLoading(true);
 
-    // Simulate conversational account creation
-    setTimeout(() => {
-      setLoading(false);
+    try {
+      const supabase = createClient(request as unknown as NextRequest);
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            username,
+          },
+        },
+      });
+
+      if (error) throw error;
+
       router.push("/dashboard");
-    }, 700);
+    } catch (err: any) {
+      setError(err.message);
+      setLoading(false);
+    }
   }
 
   return (
