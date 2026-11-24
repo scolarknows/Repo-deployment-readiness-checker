@@ -1,20 +1,17 @@
-"use server";
+import { createClient } from "@supabase/supabase-js";
 
-import { createServerClient, type SanitizedRequestHeaders, type SerializeCookieOptions } from "@supabase/ssr";
-import { type NextRequest } from "next/server";
-import { supabaseUrl, supabaseAnonKey } from "./index";
+const supabaseUrl =
+  (typeof import.meta !== "undefined" && import.meta.env?.VITE_SUPABASE_URL) ||
+  (typeof process !== "undefined" && process.env?.NEXT_PUBLIC_SUPABASE_URL) ||
+  "https://your-project.supabase.co";
 
-export function createClient(request: NextRequest) {
-  return createServerClient(supabaseUrl, supabaseAnonKey, {
-    cookies: {
-      getAll() {
-        return request.cookies.getAll();
-      },
-      setAll(cookiesToSet: SerializeCookieOptions[]) {
-        cookiesToSet.forEach(({ name, value, options }) => {
-          request.cookies.set(name, value);
-        });
-      },
-    },
-  });
+const supabaseAnonKey =
+  (typeof import.meta !== "undefined" && import.meta.env?.VITE_SUPABASE_ANON_KEY) ||
+  (typeof process !== "undefined" && process.env?.NEXT_PUBLIC_SUPABASE_ANON_KEY) ||
+  "your-anon-key";
+
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+export function getSupabaseClient() {
+  return supabase;
 }
