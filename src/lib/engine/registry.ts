@@ -8,6 +8,9 @@ import { checkScr001 } from "./rules/scr-001";
 import { checkScr002 } from "./rules/scr-002";
 import { checkDep001 } from "./rules/dep-001";
 import { checkSrv001 } from "./rules/srv-001";
+import { checkSrv002 } from "./rules/srv-002";
+import { checkCi001 } from "./rules/ci-001";
+import { checkDoc001 } from "./rules/doc-001";
 import { checkGit001 } from "./rules/git-001";
 
 export interface RuleDefinition {
@@ -85,12 +88,36 @@ export const RULE_REGISTRY: RuleDefinition[] = [
     check: checkSrv001,
   },
   {
+    id: "SRV-002",
+    category: "Server",
+    defaultSeverity: "medium",
+    title: "Permissive CORS",
+    fixGuide: "Restrict allowed CORS origins to specific trusted domains instead of using wildcard '*'.",
+    check: checkSrv002,
+  },
+  {
     id: "GIT-001",
     category: "Repository",
     defaultSeverity: "medium",
     title: "Missing or Incomplete .gitignore",
     fixGuide: "Create or update .gitignore to exclude node_modules, .env files, and build output directories.",
     check: checkGit001,
+  },
+  {
+    id: "CI-001",
+    category: "Automation",
+    defaultSeverity: "low",
+    title: "Missing CI/CD Workflow",
+    fixGuide: "Create a CI/CD workflow file under .github/workflows.",
+    check: checkCi001,
+  },
+  {
+    id: "DOC-001",
+    category: "Documentation",
+    defaultSeverity: "medium",
+    title: "Missing README Setup Instructions",
+    fixGuide: "Add an Installation or Getting Started section to README.md detailing how to run the project.",
+    check: checkDoc001,
   },
 ];
 

@@ -1,18 +1,4 @@
---primary: #1B365D;        /* navy */
---secondary: #005A9C;      /* blue */
---accent: #60C1E5;         /* sky */
---accent-light: #A0E0EF;   /* ice */
-
---severity-critical: #A0171D;     /* desaturated red */
---severity-high: #D47A1C;         /* desaturated amber */
-
---near-white: #F5F5F5;
-
-/* Surface and borders */
---surface: #1B365D;
---border: #4A4A4A;
-
-/* Green is reserved for cursor trail only -- never use on UI elements */
+@import "tailwindcss";
 
 /* ========================================
    Base & Background
@@ -21,11 +7,11 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Set CSS variables on the root for the design system */
+/* Set CSS variables on the root for the design system (PRD 8.1) */
 :root {
   --bg: #08111F;
   --fg: #F5F5F5;
-  --muted: #6B7A8C;
+  --muted: #8E9CAE;
   --primary: #1B365D;
   --primary-dark: #08111F;
   --secondary: #005A9C;
@@ -34,12 +20,13 @@ html {
   --severity-critical: #A0171D;
   --severity-high: #D47A1C;
   --near-white: #F5F5F5;
-  --surface: #1B365D;
-  --border: #4A4A4A;
+  --surface: #13253F;
+  --surface-hover: #183052;
+  --border: #233854;
+  --border-focus: #60C1E5;
   --radius: 0.5rem;
 }
 
-/* Background can be darker than --bg for the page */
 body {
   font-family: "DM Sans", system-ui, -apple-system, sans-serif;
   background-color: var(--bg);
@@ -48,7 +35,7 @@ body {
 }
 
 /* ========================================
-   Tailwind layer — weight rules
+   Tailwind layer — weight rules (PRD 8.2)
    ======================================== */
 @layer base {
   /* weight 200 only for body text at 18px or larger, in near-white with 4.5:1+ contrast */
@@ -59,8 +46,7 @@ body {
     color: var(--near-white);
   }
 
-  /* headings, buttons, labels, navigation, table text, badges use weight 500 */
-  h1,
+  /* headings below H1, buttons, labels, navigation, table text, badges use weight 500 */
   h2,
   h3,
   h4,
@@ -82,11 +68,8 @@ body {
   }
 }
 
-/* ========================================
-   Responsive: min 360px
-   ======================================== */
 @media (min-width: 360px) {
   body {
-    font-size: 14px; /* base for 360px viewport */
+    font-size: 14px;
   }
 }
