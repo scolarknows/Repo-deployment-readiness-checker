@@ -1,17 +1,8 @@
-import { createClient } from "@supabase/supabase-js";
+import { createBrowserClient } from "@supabase/ssr";
 
-const supabaseUrl =
-  (typeof import.meta !== "undefined" && import.meta.env?.VITE_SUPABASE_URL) ||
-  (typeof process !== "undefined" && process.env?.NEXT_PUBLIC_SUPABASE_URL) ||
-  "https://your-project.supabase.co";
+export function createClient() {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder.supabase.co";
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "placeholder-anon-key";
 
-const supabaseAnonKey =
-  (typeof import.meta !== "undefined" && import.meta.env?.VITE_SUPABASE_ANON_KEY) ||
-  (typeof process !== "undefined" && process.env?.NEXT_PUBLIC_SUPABASE_ANON_KEY) ||
-  "your-anon-key";
-
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
-export function getSupabaseClient() {
-  return supabase;
+  return createBrowserClient(supabaseUrl, supabaseKey);
 }
