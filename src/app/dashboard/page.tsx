@@ -76,13 +76,16 @@ export default function DashboardPage() {
             {error}
           </div>
         )}
-        {loading && !result && (
+      </section>
+
+      {loading && !result && (
+        <section className="bg-[var(--surface)] p-6 rounded-lg border border-[var(--border)] mb-8 flex flex-col items-center justify-center py-12">
           <AnalysingLoader
             title="Analysing Repository"
             message="Fetching tree, reading files, and running static heuristics..."
           />
-        )}
-      </section>
+        </section>
+      )}
 
       {result && (
         <section className="bg-[var(--surface)] p-6 rounded-lg border border-[var(--border)]">
