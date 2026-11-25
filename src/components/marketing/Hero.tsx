@@ -1,21 +1,30 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { HeroScanDemo } from "./HeroScanDemo";
+import { AnalysingLoader } from "@/components/ui/AnalysingLoader";
 
 export function Hero() {
   const router = useRouter();
   const [repoInput, setRepoInput] = useState("");
+  const [showLoader, setShowLoader] = useState(false);
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (repoInput.trim()) {
+      setShowLoader(true);
       router.push(`/dashboard?repo=${encodeURIComponent(repoInput.trim())}`);
     } else {
       router.push("/dashboard");
     }
   }
+
+  // Hide loader after navigation completes (simple timeout-based approach)
+  useEffect(() => {
+    const timer = setTimeout(() => setShowLoader(false), 3000);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <section className="pt-32 pb-16 md:pt-40 md:pb-24 max-w-6xl mx-auto px-6">
@@ -48,6 +57,14 @@ export function Hero() {
       </div>
 
       <HeroScanDemo />
+
+      {/* Show analysing loader if we just navigated to dashboard with a scan */}
+      {showLoader && (
+        <AnalysingLoader
+          title="Analysing Repository"
+          message="Fetching tree, reading files, and running static heuristics..."
+        />
+      )}
     </section>
   );
 }

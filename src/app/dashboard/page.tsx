@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-
+import { AnalysingLoader } from "@/components/ui/AnalysingLoader";
 import { useRouter } from "next/navigation";
 
 export default function DashboardPage() {
@@ -75,6 +75,12 @@ export default function DashboardPage() {
           <div className="mt-4 p-4 bg-[var(--severity-critical)]/20 border border-[var(--severity-critical)] rounded text-red-200 text-sm">
             {error}
           </div>
+        )}
+        {loading && !result && (
+          <AnalysingLoader
+            title="Analysing Repository"
+            message="Fetching tree, reading files, and running static heuristics..."
+          />
         )}
       </section>
 
