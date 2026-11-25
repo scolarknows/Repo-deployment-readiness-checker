@@ -14,6 +14,17 @@ export function checkSec001(context: ScanContext): Finding[] {
   ];
 
   for (const [path, content] of context.files.entries()) {
+    // Exclude test files and mock fixtures from secret alerts
+    const lowerPath = path.toLowerCase();
+    if (
+      lowerPath.includes("test") ||
+      lowerPath.includes("spec") ||
+      lowerPath.includes("mock") ||
+      lowerPath.includes("fixture")
+    ) {
+      continue;
+    }
+
     for (const p of PATTERNS) {
       const match = content.match(p.regex);
       if (match) {

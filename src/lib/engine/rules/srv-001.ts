@@ -6,6 +6,16 @@ export function checkSrv001(context: ScanContext): Finding[] {
 
   for (const [path, content] of context.files.entries()) {
     if (path.endsWith(".json")) continue;
+    const lowerPath = path.toLowerCase();
+    // Exclude test specs, examples, and benchmarks from server port warnings
+    if (
+      lowerPath.includes("test") ||
+      lowerPath.includes("spec") ||
+      lowerPath.includes("examples") ||
+      lowerPath.includes("benchmark")
+    ) {
+      continue;
+    }
 
     // Look for app.listen(3000) or server.listen(8080) hardcoded
     const listenMatch = content.match(/\.(listen|serve)\s*\(\s*(\d{4,5})/);
